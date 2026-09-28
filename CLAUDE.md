@@ -41,6 +41,18 @@ Mirrors [`.github/copilot-instructions.md`](.github/copilot-instructions.md). Ke
 - **Spell check**: words go in `inst/WORDLIST` (see `.github/workflows/check-spelling.yaml`). Update the wordlist instead of disabling the check.
 - **Link check**: tuned in `lychee.toml`; prefer fixing broken links over adding exceptions.
 
+## ai-config plugin
+
+`.claude/settings.json` declares the `Morrison-Lab` marketplace (source:
+[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config)) and enables
+its `ai-config@Morrison-Lab` plugin, along with the `posit-dev-skills` and `sembr`
+marketplaces this template also carries, matching
+[`Morrison-Lab/qbt`](https://github.com/Morrison-Lab/qbt). Declaring is not
+installing: a local session still needs `claude plugin install ai-config@Morrison-Lab`
+once. Because this is a template repository, this declaration is copied once into
+every repo created from it — an omission here silently ships to every downstream
+manuscript.
+
 ## Pull request expectations
 
 - Keep PRs scoped — bug fixes shouldn't smuggle in refactors.
