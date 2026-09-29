@@ -91,12 +91,10 @@ callouty-theorem:
       collapse: true
       icon: false
   remark:
-    override-title: true
+    override-title: false
     callout:
       type: remark
-      appearance: default
-      collapse: false
-      icon: true
+      appearance: minimal
 
 custom-callout:
   lem:
