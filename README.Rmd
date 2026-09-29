@@ -27,6 +27,7 @@ A template for creating manuscripts with [Quarto](https://quarto.org/docs/manusc
 - **Claude Code integration**: automated code review via the `@claude` mention
 - **GitHub Copilot integration**: preconfigured Copilot agent environment
 - **Custom CSS**: theorem and proof environments via Quarto extensions
+- **Code language labels**: each highlighted code block is labeled with its language in HTML output (`d-morrison/code-language-labels`)
 - **MECA bundle**: automatic creation of MECA archive for journal submission
 
 ## Quick start
