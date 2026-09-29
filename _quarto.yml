@@ -121,6 +121,7 @@ custom-callout:
 filters:
   - div-anchors
   - equation-anchors
+  - code-language-labels
 
 format:
   html:
