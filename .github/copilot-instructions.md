@@ -27,7 +27,7 @@ Authoritative style guide: [UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-
 ## Style conventions
 
 - **Lists of 3+ items**: use bullet lists rather than comma-separated prose. Always leave a blank line before a markdown bullet list.
-- **Code chunks**: use `#| code-fold: true` when the *output* is the point and the code is incidental.
+- **Code chunks**: HTML output folds code by default (the site config sets `code-fold: true` with `code-tools: true`, as rme does). Keep the default when the *output* is the point and the code is incidental; set `#| code-fold: false` on tutorial code, short examples, code that is the main focus, or chunks where the console output is the main content.
 - **R style**: respect `.lintr.R`. Run `lintr::lint_dir()` before declaring R changes done.
 - **Quarto chunks**: prefer chunk options as YAML-style `#|` directives, not as inline `r, opt = val` arguments.
 
