@@ -92,6 +92,7 @@ jobs:
           python3 .github/scripts/add-home-banner.py
         env:
           HTML_DIR: preview_artifact/site
+          HIGHLIGHT_CHANGES: ${{ !contains(github.event.pull_request.labels.*.name, 'no-preview-highlights') }}
       - name: Replace preview artifact
         # Same upload as gha's (preview/action.yml, "Upload preview artifact"),
         # which sets no include-hidden-files: the artifact never held dotfiles,

@@ -169,6 +169,8 @@ def main():
             print(f"  - {page['title']} ({page['rel_path']})")
     else:
         print("\nNo changed pages detected (no page carries gha's highlight marker)")
+        if os.getenv("HIGHLIGHT_CHANGES") == "true":
+            print("::warning::Highlighting is on but no page carries gha's highlight marker; if the PR changes pages, gha may have renamed it.")
     
     # Find all HTML files recursively
     html_files = list(html_dir.rglob('*.html'))

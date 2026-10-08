@@ -16,3 +16,5 @@ _freeze/
 assets/pr-screenshots/
 
 **/*.quarto_ipynb
+__pycache__/
+*.pyc
