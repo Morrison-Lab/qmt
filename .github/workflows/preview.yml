@@ -79,10 +79,23 @@ jobs:
           name: pr-preview-site
           path: preview_artifact/
       - name: Add banners to preview pages
-        run: python3 .github/scripts/add-home-banner.py
+        # The script exits 0 when HTML_DIR is missing, which would pass CI with
+        # no banners; fail here instead. gha's artifact holds `site/` (the
+        # rendered output-dir) and `meta/` at its root (gha preview/action.yml,
+        # "Stage site for upload").
+        run: |
+          set -euo pipefail
+          if [ ! -f "$HTML_DIR/index.html" ]; then
+            echo "::error::$HTML_DIR/index.html is missing; the preview artifact layout changed"
+            exit 1
+          fi
+          python3 .github/scripts/add-home-banner.py
         env:
           HTML_DIR: preview_artifact/site
       - name: Replace preview artifact
+        # Same upload as gha's (preview/action.yml, "Upload preview artifact"),
+        # which sets no include-hidden-files: the artifact never held dotfiles,
+        # so none are dropped here.
         uses: actions/upload-artifact@v5
         with:
           name: pr-preview-site
