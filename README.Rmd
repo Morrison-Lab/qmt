@@ -121,7 +121,8 @@ qmt/
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
 | `publish.yml` | Push to `main` | Build and deploy to GitHub Pages |
-| `preview.yml` | Pull request | PR preview with change highlighting |
+| `preview.yml` | Pull request | Build the PR preview, with change highlighting |
+| `preview-deploy.yml` | After `preview.yml` | Publish the preview to `gh-pages` and comment its link |
 | `check-spelling.yaml` | Push/PR to `main` | Spell check |
 | `check-links.yml` | Push/PR/weekly | Link validation |
 | `lint-project.yaml` | Push/PR | R code linting |
@@ -132,6 +133,12 @@ qmt/
 | `claude-code-review.yml` | Pull request | Automated code review |
 | `copilot-setup-steps.yml` | Copilot agent | Preconfigure Copilot environment |
 | `summary.yml` | New issue | AI issue summary |
+
+PR previews render every format `_quarto.yml` declares, so no label is needed for the PDF or Word versions.
+Two labels change a preview:
+
+- `no-preview-highlights` turns off the highlighting of changed text.
+- `clear freezer` discards the cached computation results and re-renders everything.
 
 ## Writing content
 

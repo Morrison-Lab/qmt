@@ -9,6 +9,13 @@ import json
 import re
 from pathlib import Path
 
+# Markers gha's preview step writes into a page it highlights (gha
+# preview/highlight-html-changes.py) and into the home page when its own
+# changed-chapters banner is on (gha preview/add-home-banner.py).
+GHA_PAGE_BANNER = "<!-- gha-preview-page-banner:start -->"
+GHA_HOME_BANNER = "<!-- gha-preview-banner:start -->"
+
+
 def get_page_title(html_path):
     """Extract the page title from an HTML file."""
     try:
@@ -48,8 +55,9 @@ def add_page_banner(html_path, html_dir, changed_pages):
     
     banners = []
     
-    # Banner 1: Changed pages (if any exist)
-    if changed_pages:
+    # Banner 1: Changed pages (if any exist). Skip it on a page that already
+    # carries gha's own home-page banner, so the list never appears twice.
+    if changed_pages and GHA_HOME_BANNER not in html:
         page_links = []
         for page_info in changed_pages:
             page_rel_path = page_info['rel_path']
@@ -136,32 +144,33 @@ def main():
     print("Adding Format Banners to Pages")
     print("="*60)
     
-    # Find all pages with tracked changes DOCX files (these are the changed pages)
+    # gha writes a tracked-changes DOCX for every DOCX it finds, changed or not
+    # (preview/create-docx-tracked-changes.py), so the DOCX files cannot say
+    # which pages changed. gha's highlighter marks each page it finds modified
+    # or new, so the changed pages are the HTML files carrying that marker.
+    # Nothing is marked while the `no-preview-highlights` label is on.
     changed_pages = []
-    for tracked_docx in html_dir.rglob('*-tracked-changes.docx'):
-        # Get the corresponding HTML file
-        stem = tracked_docx.stem.replace('-tracked-changes', '')
-        html_file = tracked_docx.parent / f"{stem}.html"
-        
-        if html_file.exists():
-            try:
-                rel_path = html_file.relative_to(html_dir)
-                title = get_page_title(html_file)
-                changed_pages.append({
-                    'rel_path': rel_path,
-                    'stem': stem,
-                    'title': title,
-                    'html_path': html_file
-                })
-            except Exception as e:
-                print(f"  Warning: Could not process {html_file}: {e}", file=sys.stderr)
-    
+    for html_file in sorted(html_dir.rglob('*.html')):
+        try:
+            if GHA_PAGE_BANNER not in html_file.read_text(encoding='utf-8'):
+                continue
+            changed_pages.append({
+                'rel_path': html_file.relative_to(html_dir),
+                'stem': html_file.stem,
+                'title': get_page_title(html_file),
+                'html_path': html_file
+            })
+        except Exception as e:
+            print(f"  Warning: Could not process {html_file}: {e}", file=sys.stderr)
+
     if changed_pages:
         print(f"\nFound {len(changed_pages)} changed page(s):")
         for page in changed_pages:
             print(f"  - {page['title']} ({page['rel_path']})")
     else:
-        print("\nNo changed pages detected (no tracked-changes DOCX files found)")
+        print("\nNo changed pages detected (no page carries gha's highlight marker)")
+        if os.getenv("HIGHLIGHT_CHANGES") == "true":
+            print("::warning::Highlighting is on but no page carries gha's highlight marker; if the PR changes pages, gha may have renamed it.")
     
     # Find all HTML files recursively
     html_files = list(html_dir.rglob('*.html'))
