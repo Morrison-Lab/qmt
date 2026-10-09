@@ -1,0 +1,30 @@
+---
+title: "Supplementary Analysis"
+---
+
+This notebook contains supplementary analyses referenced in the main
+manuscript. Results computed here are embedded in the HTML version of
+the article.
+
+## Data exploration
+
+```{r}
+#| label: tbl-data-head
+#| tbl-cap: "First six rows of the example dataset."
+head(mtcars)
+```
+
+## Additional models
+
+```{r}
+#| label: supplementary-model
+fit <- lm(mpg ~ wt + hp, data = mtcars)
+summary(fit)
+```
+
+```{r}
+#| label: fig-residuals
+#| fig-cap: "Residual diagnostics for the supplementary regression model."
+par(mfrow = c(2, 2))
+plot(fit)
+```
