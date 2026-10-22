@@ -127,7 +127,7 @@ format:
   html:
     filters:
       - _repo-links.lua
-      - sun123zxy/callouty-theorem
+      - Morrison-Lab/callouty-theorem
       - coatless-quarto/custom-callout
     theme:
       light: cosmo
@@ -151,7 +151,7 @@ format:
     df-print: paged
   pdf:
     filters:
-      - sun123zxy/callouty-theorem
+      - Morrison-Lab/callouty-theorem
       - coatless-quarto/custom-callout
     include-in-header:
       text: |
