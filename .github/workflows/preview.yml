@@ -19,14 +19,16 @@ on:
     # No status check from this workflow is required on main (see
     # .github/rulesets/main.json), so a PR with no run here is not blocked;
     # preview-deploy.yml starts from this workflow's runs, so it skips too.
-    paths-ignore:
-      - '.github/**'
-      - '!.github/workflows/preview.yml'
-      - '.claude/**'
-      - '*.md'
-      - '_typos.toml'
-      - '.gitignore'
-      - '.gitattributes'
+    paths:
+      - '**'
+      - '!.github/**'
+      - '.github/workflows/preview.yml'
+      - '.github/scripts/**'
+      - '!.claude/**'
+      - '!*.md'
+      - '!_typos.toml'
+      - '!.gitignore'
+      - '!.gitattributes'
 
 jobs:
   build:
