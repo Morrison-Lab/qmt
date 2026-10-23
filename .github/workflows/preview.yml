@@ -14,6 +14,21 @@ name: Quarto Preview Build
 on:
   pull_request:
     types: [opened, reopened, synchronize, labeled, unlabeled, closed]
+    # Skip the render on a PR that changes nothing the site is built from.
+    # A change to this workflow itself still renders, to test it.
+    # No status check from this workflow is required on main (see
+    # .github/rulesets/main.json), so a PR with no run here is not blocked;
+    # preview-deploy.yml starts from this workflow's runs, so it skips too.
+    paths:
+      - '**'
+      - '!.github/**'
+      - '.github/workflows/preview.yml'
+      - '.github/scripts/**'
+      - '!.claude/**'
+      - '!*.md'
+      - '!_typos.toml'
+      - '!.gitignore'
+      - '!.gitattributes'
 
 jobs:
   build:
@@ -43,6 +58,9 @@ jobs:
       # previews too. Never leave this empty: empty selects a legacy branch that
       # renders html plus only the formats requested by `preview:*` labels.
       formats: default
+      # gha's default 45-minute cap cancels the preview of a full re-render of a
+      # grown site (lds, sds and mds each raised it).
+      timeout-minutes: 120
       timezone: America/Los_Angeles
       # Rebuild when this label is added or removed (it toggles highlighting below).
       extra-preview-labels: '["no-preview-highlights"]'
