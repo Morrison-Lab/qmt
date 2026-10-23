@@ -26,7 +26,6 @@ on:
       - '.github/scripts/**'
       - '!.claude/**'
       - '!*.md'
-      - '!_typos.toml'
       - '!.gitignore'
       - '!.gitattributes'
 
